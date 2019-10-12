@@ -1,18 +1,17 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:basic="http://www.mulesoft.org/schema/mule/basic"
+	xmlns:wiremock="http://www.mulesoft.org/schema/mule/wiremock"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-          http://www.mulesoft.org/schema/mule/basic http://www.mulesoft.org/schema/mule/basic/current/mule-basic.xsd">
+	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+          http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd">
 
-	<basic:config name="config" configId="configId">
-		<basic:connection requiredParameter="aValue" />
-	</basic:config>
+	<wiremock:config name="wiremock-config" />
 
-	<flow name="sayHiFlow">
-		<basic:say-hi person="Mariano Gonzalez" />
-	</flow>
-
-	<flow name="retrieveInfoFlow">
-		<basic:retrieve-info config-ref="config" />
+	<flow name="hello-world-flow">
+		<wiremock:start />
+		<http:request method="GET" doc:id="06653a1c-5b56-43b7-b812-d0033fefa29f" url="http://localhost:8080/hello" />
+		<wiremock:stop />
 	</flow>
 
 </mule>

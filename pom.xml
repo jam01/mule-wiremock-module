@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.jam01</groupId>
-	<artifactId>mockserver-module</artifactId>
+	<groupId>com.jam01.mule</groupId>
+	<artifactId>wiremock-module</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
-	<name>Basic Extension</name>
+	<name>WireMock Module for Mule 4</name>
 
 	<properties>
 		<!-- default compiler properties -->
@@ -29,9 +29,9 @@
 		<maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
 		<maven.jar.plugin.version>2.6</maven.jar.plugin.version>
 
-		<formatter.version>2.9.0</formatter.version>
-		<sonar.version>3.6.0.1398</sonar.version>
 		<sortpom.version>2.10.0</sortpom.version>
+		<formatter.version>2.10.0</formatter.version>
+		<sonar.version>3.6.0.1398</sonar.version>
 
 		<!-- [start] mule extension properties [start] -->
 		<apt.phase>process-sources</apt.phase>
@@ -59,8 +59,6 @@
 		<munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
 		<munit.extensions.maven.plugin.version>1.0.0-BETA2</munit.extensions.maven.plugin.version>
 		<munit.version>2.1.5</munit.version>
-
-		<skipJavaTests>${skipTests}</skipJavaTests>
 		<!-- [end] mule extension properties [end] -->
 	</properties>
 
@@ -69,7 +67,6 @@
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock-jre8</artifactId>
 			<version>2.25.0</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- [start] mule extension dependencies [start] -->
@@ -177,6 +174,35 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- [end] mule extension dependencies [end] -->
+
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<version>1.5.9</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.services</groupId>
+			<artifactId>mule-service-http</artifactId>
+			<version>1.4.7</version>
+			<classifier>mule-service</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.services</groupId>
+			<artifactId>mule-service-http</artifactId>
+			<version>1.4.7</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.services</groupId>
+			<artifactId>mule-service-scheduler</artifactId>
+			<version>1.2.3</version>
+			<classifier>mule-service</classifier>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- [start] mulesoft repositories [start] -->
@@ -289,9 +315,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven.surefire.plugin.version}</version>
-					<configuration>
-						<skipTests>${skipJavaTests}</skipTests>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>com.mulesoft.munit</groupId>
