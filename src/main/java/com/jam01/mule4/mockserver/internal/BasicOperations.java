@@ -16,12 +16,13 @@ public class BasicOperations {
    * Example of an operation that uses the configuration and a connection instance to perform some action.
    */
   @MediaType(value = ANY, strict = false)
-  public String retrieveInfo(@Config BasicConfiguration configuration, @Connection BasicConnection connection){
+  public String retrieveInfo(@Config BasicConfiguration configuration, @Connection BasicConnection connection) {
     return "Using Configuration [" + configuration.getConfigId() + "] with Connection id [" + connection.getId() + "]";
   }
 
   /**
-   * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the payload.
+   * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the
+   * payload.
    */
   @MediaType(value = ANY, strict = false)
   public String sayHi(String person) {

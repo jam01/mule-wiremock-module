@@ -17,26 +17,26 @@ import org.slf4j.LoggerFactory;
  * This class (as it's name implies) provides connection instances and the funcionality to disconnect and validate those
  * connections.
  * <p>
- * All connection related parameters (values required in order to create a connection) must be
- * declared in the connection providers.
+ * All connection related parameters (values required in order to create a connection) must be declared in the connection
+ * providers.
  * <p>
- * This particular example is a {@link PoolingConnectionProvider} which declares that connections resolved by this provider
- * will be pooled and reused. There are other implementations like {@link CachedConnectionProvider} which lazily creates and
- * caches connections or simply {@link ConnectionProvider} if you want a new connection each time something requires one.
+ * This particular example is a {@link PoolingConnectionProvider} which declares that connections resolved by this provider will
+ * be pooled and reused. There are other implementations like {@link CachedConnectionProvider} which lazily creates and caches
+ * connections or simply {@link ConnectionProvider} if you want a new connection each time something requires one.
  */
 public class BasicConnectionProvider implements PoolingConnectionProvider<BasicConnection> {
 
   private final Logger LOGGER = LoggerFactory.getLogger(BasicConnectionProvider.class);
 
- /**
-  * A parameter that is always required to be configured.
-  */
+  /**
+   * A parameter that is always required to be configured.
+   */
   @Parameter
   private String requiredParameter;
 
- /**
-  * A parameter that is not required to be configured by the user.
-  */
+  /**
+   * A parameter that is not required to be configured by the user.
+   */
   @DisplayName("Friendly Name")
   @Parameter
   @Optional(defaultValue = "100")
