@@ -23,7 +23,5 @@ public class BasicOperationsTestCase extends MuleArtifactFunctionalTestCase {
   }
 
   // @Test
-  public void executeVerifyOperation() throws Exception {
-
-  }
+  public void executeVerifyOperation() throws Exception {}
 }

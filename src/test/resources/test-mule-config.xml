@@ -1,7 +1,6 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wiremock="http://www.mulesoft.org/schema/mule/wiremock"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
           http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd">
@@ -9,9 +8,9 @@
 	<wiremock:config name="wiremock-config" />
 
 	<flow name="hello-world-flow">
-		<wiremock:start />
-		<http:request method="GET" doc:id="06653a1c-5b56-43b7-b812-d0033fefa29f" url="http://localhost:8080/hello" />
-		<wiremock:stop />
+		<wiremock:start config-ref="wiremock-config" />
+		<http:request method="GET" url="http://localhost:8080/hello" />
+		<wiremock:stop config-ref="wiremock-config" />
 	</flow>
 
 </mule>

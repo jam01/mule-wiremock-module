@@ -191,15 +191,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mule.services</groupId>
-			<artifactId>mule-service-http</artifactId>
-			<version>1.4.7</version>
+			<artifactId>mule-service-scheduler</artifactId>
+			<version>1.2.3</version>
 			<classifier>mule-service</classifier>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.services</groupId>
-			<artifactId>mule-service-scheduler</artifactId>
-			<version>1.2.3</version>
+			<artifactId>mule-service-http</artifactId>
+			<version>1.4.7</version>
 			<classifier>mule-service</classifier>
 			<scope>test</scope>
 		</dependency>
