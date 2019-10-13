@@ -8,41 +8,43 @@ import com.github.tomakehurst.wiremock.matching.RequestPattern;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
-import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.*;
-import static org.mule.runtime.extension.api.values.ValueBuilder.getValuesFor;
-
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_AT_LEAST;
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_AT_MOST;
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_EQUAL_TO;
 
 public class WireMockOperations {
 
-  public void start(@Config WireMockConfiguration config) {
+  private static final String WHEN_PARAM_GROUP = "When request... then return...";
+  private static final String VERIFY_PARAM_GROUP = "Verify that...";
+  private static final Logger LOGGER = LoggerFactory.getLogger(WireMockOperations.class);
+
+  public void startServer(@Config WireMockConfiguration config) {
     config.startMockServer();
   }
 
-  public void stop(@Config WireMockConfiguration config) {
+  public void stopServer(@Config WireMockConfiguration config) {
     config.stopMockServer();
   }
 
-  public void stub(@Config WireMockConfiguration config,
-                   @DisplayName("JSON Stub Mapping") Object jsonMapping) {
-    if (jsonMapping == null)
+  public void addStub(@Config WireMockConfiguration config,
+                      @ParameterGroup(name = WHEN_PARAM_GROUP) StubParameter param) {
+    if (param.jsonMapping == null)
       return;
 
-    StubMappingCollection stubCollection = read(jsonMapping, StubMappingCollection.class);
+    StubMappingCollection stubCollection = read(param.jsonMapping, StubMappingCollection.class);
 
     // See: com.github.tomakehurst.wiremock.standalone.JsonFileMappingsSource.loadMappingsInto
     try {
@@ -55,17 +57,13 @@ public class WireMockOperations {
     }
   }
 
-  public void verify(@Config WireMockConfiguration config,
-                     @DisplayName("Comparison") @OfValues(VerificationComparisonValueProvider.class) @Optional(
-                         defaultValue = IS_AT_LEAST) String comparison,
-                     @DisplayName("Value") @Optional(
-                         defaultValue = "1") Integer value,
-                     @DisplayName("JSON Verification Mapping") Object jsonMapping) {
-    if (jsonMapping == null)
+  public void verifyRequest(@Config WireMockConfiguration config,
+                            @ParameterGroup(name = VERIFY_PARAM_GROUP) VerificationParameter param) {
+    if (param.jsonMapping == null)
       return;
 
-    CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(comparison, value);
-    RequestPattern requestPattern = read(jsonMapping, RequestPattern.class);
+    CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(param.comparison, param.value);
+    RequestPattern requestPattern = read(param.jsonMapping, RequestPattern.class);
 
     config.getMockClient().verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));
   }

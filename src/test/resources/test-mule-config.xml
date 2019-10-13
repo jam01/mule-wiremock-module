@@ -8,9 +8,9 @@
 	<wiremock:config name="wiremock-config" />
 
 	<flow name="hello-world-flow">
-		<wiremock:start config-ref="wiremock-config" />
+		<wiremock:start-server config-ref="wiremock-config" />
 		<http:request method="GET" url="http://localhost:8080/hello" />
-		<wiremock:verify config-ref="wiremock-config"
+		<wiremock:verify-request config-ref="wiremock-config"
 			jsonMapping='#[%dw 2.0
 output application/json
 ---
@@ -18,7 +18,7 @@ output application/json
 	"method" : "GET",
 	"url" : "/hello"
 }]' />
-		<wiremock:stop config-ref="wiremock-config" />
+		<wiremock:stop-server config-ref="wiremock-config" />
 	</flow>
 
 </mule>
