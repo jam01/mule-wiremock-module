@@ -10,6 +10,14 @@
 	<flow name="hello-world-flow">
 		<wiremock:start config-ref="wiremock-config" />
 		<http:request method="GET" url="http://localhost:8080/hello" />
+		<wiremock:verify config-ref="wiremock-config"
+			jsonMapping='#[%dw 2.0
+output application/json
+---
+{
+	"method" : "GET",
+	"url" : "/hello"
+}]' />
 		<wiremock:stop config-ref="wiremock-config" />
 	</flow>
 

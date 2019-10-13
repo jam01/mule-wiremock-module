@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 public class WireMockConfiguration {
 
   private WireMockServer mockServer;
+  private WireMock mockClient;
   private boolean isStarted;
 
   @Parameter
@@ -19,24 +20,29 @@ public class WireMockConfiguration {
   private Integer port;
 
 
-  public void start() {
+  public void startMockServer() {
     if (isStarted)
       return;
 
-    mockServer = new WireMockServer(options()
-        .port(port)
-    // .usingFilesUnderClasspath("mappings")
-    );
+    mockServer = new WireMockServer(options().port(port));
     mockServer.start();
+
     isStarted = true;
   }
 
-  public void stop() {
+  public void stopMockServer() {
     if (isStarted)
       mockServer.stop();
   }
 
   public WireMockServer getMockServer() {
     return mockServer;
+  }
+
+  public WireMock getMockClient() {
+    if (mockClient == null)
+      mockClient = new WireMock(getMockServer());
+
+    return mockClient;
   }
 }

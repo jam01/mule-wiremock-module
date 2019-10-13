@@ -1,40 +1,49 @@
 package com.jam01.mule4.wiremock.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.tomakehurst.wiremock.client.CountMatchingStrategy;
 import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.common.JsonException;
+import com.github.tomakehurst.wiremock.matching.RequestPattern;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
+import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Config;
-import org.mule.runtime.extension.api.annotation.param.MediaType;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.values.OfValues;
+import org.mule.runtime.extension.api.values.ValueProvider;
+import org.mule.runtime.extension.api.values.ValueResolvingException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
-import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
+import static org.mule.runtime.extension.api.values.ValueBuilder.getValuesFor;
+
 
 public class WireMockOperations {
 
-  @MediaType(value = ANY, strict = false)
   public void start(@Config WireMockConfiguration config) {
-    config.start();
+    config.startMockServer();
   }
 
-  @MediaType(value = ANY, strict = false)
   public void stop(@Config WireMockConfiguration config) {
-    config.stop();
+    config.stopMockServer();
   }
 
-  @MediaType(value = ANY, strict = false)
   public void stub(@Config WireMockConfiguration config,
                    @DisplayName("JSON Stub Mapping") Object jsonMapping) {
     if (jsonMapping == null)
       return;
 
-    StubMappingCollection stubCollection = fromObject(jsonMapping);
+    StubMappingCollection stubCollection = read(jsonMapping, StubMappingCollection.class);
 
     // See: com.github.tomakehurst.wiremock.standalone.JsonFileMappingsSource.loadMappingsInto
     try {
@@ -47,29 +56,74 @@ public class WireMockOperations {
     }
   }
 
+  private static final String IS_AT_LEAST = "AT_LEAST";
+  private static final String IS_AT_MOST = "AT_MOST";
+  private static final String IS_EQUAL_TO = "EQUAL";
+
+  public void verify(@Config WireMockConfiguration config,
+                     @DisplayName("Comparison") @OfValues(VerificationComparisonValueProvider.class) @Optional(
+                         defaultValue = IS_AT_LEAST) String comparison,
+                     @DisplayName("Value") @Optional(
+                         defaultValue = "1") Integer value,
+                     @DisplayName("JSON Verification Mapping") Object jsonMapping) {
+    if (jsonMapping == null)
+      return;
+
+    CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(comparison, value);
+    RequestPattern requestPattern = read(jsonMapping, RequestPattern.class);
+
+    config.getMockClient().verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));
+  }
+
   // See: com.github.tomakehurst.wiremock.common.Json.read(java.lang.String, java.lang.Class<T>)
-  private StubMappingCollection fromObject(@Nonnull Object object) {
+  private static <T> T read(@Nonnull Object object, Class<T> clazz) {
     try {
       if (object instanceof InputStream) {
-        return Json.getObjectMapper().readValue((InputStream) object, StubMappingCollection.class);
+        return Json.getObjectMapper().readValue((InputStream) object, clazz);
       } else if (object instanceof byte[]) {
-        return Json.getObjectMapper().readValue((byte[]) object, StubMappingCollection.class);
+        return Json.getObjectMapper().readValue((byte[]) object, clazz);
       } else if (object instanceof CharSequence) {
         String trimmed = ((CharSequence) object).toString().trim();
-        return Json.getObjectMapper().readValue(trimmed, StubMappingCollection.class);
+        return Json.getObjectMapper().readValue(trimmed, clazz);
       } else {
-        throw new IllegalArgumentException(String.format("Unable to parse StubMapping from %s class", object.getClass()));
+        throw new IllegalArgumentException(String.format("Unable to parse %s from %s object", clazz, object.getClass()));
       }
     } catch (JsonProcessingException processingException) {
       throw JsonException.fromJackson(processingException);
     } catch (IOException ioe) {
-      return throwUnchecked(ioe, StubMappingCollection.class);
+      return throwUnchecked(ioe, clazz);
     }
   }
 
-  @MediaType(value = ANY, strict = false)
-  public void verify(@Config WireMockConfiguration config) {
+  public static class VerificationComparisonValueProvider implements ValueProvider {
 
+    @Override
+    public Set<Value> resolve() throws ValueResolvingException {
+      return VALUES;
+    }
   }
 
+  private static final Map<String, String> comparisons =
+      Collections.unmodifiableMap(new HashMap<String, String>() {
+
+        {
+          put("at_least", "Is at least...");
+          put("at_most", "Is at most...");
+          put("equalt", "Is equal to...");
+        }
+      });
+  private static final Set<Value> VALUES = getValuesFor(comparisons);
+
+  private static CountMatchingStrategy getCountMatchingStrategy(String comparison, Integer value) {
+    switch (comparison) {
+      case IS_AT_LEAST:
+        return new CountMatchingStrategy(CountMatchingStrategy.GREATER_THAN_OR_EQUAL, value);
+      case IS_AT_MOST:
+        return new CountMatchingStrategy(CountMatchingStrategy.LESS_THAN_OR_EQUAL, value);
+      case IS_EQUAL_TO:
+        return new CountMatchingStrategy(CountMatchingStrategy.EQUAL_TO, value);
+    }
+
+    throw new IllegalStateException("This should never happen!");
+  }
 }
