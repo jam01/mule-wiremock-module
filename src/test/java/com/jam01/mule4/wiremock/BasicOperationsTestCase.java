@@ -1,7 +1,13 @@
 package com.jam01.mule4.wiremock;
 
 import org.junit.Test;
+import org.mule.extension.http.api.HttpResponseAttributes;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
+import org.mule.runtime.core.api.event.CoreEvent;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 
 public class BasicOperationsTestCase extends MuleArtifactFunctionalTestCase {
 
@@ -12,8 +18,8 @@ public class BasicOperationsTestCase extends MuleArtifactFunctionalTestCase {
 
   @Test
   public void executeStubOperation() throws Exception {
-    flowRunner("hello-world-flow").run();
-
+    CoreEvent result = flowRunner("hello-world-flow").run();
+    assertThat(((HttpResponseAttributes) result.getMessage().getAttributes().getValue()).getStatusCode(), is(200));
   }
 
   // @Test

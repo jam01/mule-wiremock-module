@@ -36,7 +36,7 @@
 		<!-- [start] mule extension properties [start] -->
 		<apt.phase>process-sources</apt.phase>
 		<mule.version>4.2.0</mule.version>
-		<mule.weave.version>2.2.0</mule.weave.version>
+		<mule.weave.version>2.2.1</mule.weave.version>
 		<mule.sdk.version>1.2.0</mule.sdk.version>
 		<mule.api.version>1.2.0</mule.api.version>
 		<mule.metadata.version>1.2.0</mule.metadata.version>
@@ -183,17 +183,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mule.services</groupId>
-			<artifactId>mule-service-http</artifactId>
-			<version>1.4.7</version>
-			<classifier>mule-service</classifier>
-			<scope>provided</scope>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-sockets-connector</artifactId>
+			<version>1.1.2</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.services</groupId>
 			<artifactId>mule-service-http</artifactId>
 			<version>1.4.7</version>
-			<type>test-jar</type>
+			<classifier>mule-service</classifier>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
