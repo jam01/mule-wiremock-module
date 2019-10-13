@@ -13,8 +13,6 @@ import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
-import org.mule.runtime.extension.api.values.ValueProvider;
-import org.mule.runtime.extension.api.values.ValueResolvingException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -25,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.*;
 import static org.mule.runtime.extension.api.values.ValueBuilder.getValuesFor;
 
 
@@ -55,10 +54,6 @@ public class WireMockOperations {
       throw new IllegalArgumentException(String.format("Error loading json mapping:\n%s", e.getErrors().first().getDetail()));
     }
   }
-
-  private static final String IS_AT_LEAST = "AT_LEAST";
-  private static final String IS_AT_MOST = "AT_MOST";
-  private static final String IS_EQUAL_TO = "EQUAL";
 
   public void verify(@Config WireMockConfiguration config,
                      @DisplayName("Comparison") @OfValues(VerificationComparisonValueProvider.class) @Optional(
@@ -94,25 +89,6 @@ public class WireMockOperations {
       return throwUnchecked(ioe, clazz);
     }
   }
-
-  public static class VerificationComparisonValueProvider implements ValueProvider {
-
-    @Override
-    public Set<Value> resolve() throws ValueResolvingException {
-      return VALUES;
-    }
-  }
-
-  private static final Map<String, String> comparisons =
-      Collections.unmodifiableMap(new HashMap<String, String>() {
-
-        {
-          put("at_least", "Is at least...");
-          put("at_most", "Is at most...");
-          put("equalt", "Is equal to...");
-        }
-      });
-  private static final Set<Value> VALUES = getValuesFor(comparisons);
 
   private static CountMatchingStrategy getCountMatchingStrategy(String comparison, Integer value) {
     switch (comparison) {
