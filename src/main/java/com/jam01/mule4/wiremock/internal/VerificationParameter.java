@@ -16,9 +16,9 @@ public class VerificationParameter {
   String comparison;
 
   @Parameter
-  @DisplayName("Value")
+  @DisplayName("Times")
   @Optional(defaultValue = "1")
-  Integer value;
+  Integer times;
 
   @Parameter
   @DisplayName("JSON Verification Mapping")

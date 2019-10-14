@@ -9,10 +9,7 @@ import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
 import org.mule.runtime.extension.api.annotation.param.Config;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
-import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
-import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_AT_LEAST;
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_AT_MOST;
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_EQUAL_TO;
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.*;
 
 public class WireMockOperations {
 
@@ -62,7 +57,7 @@ public class WireMockOperations {
     if (param.jsonMapping == null)
       return;
 
-    CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(param.comparison, param.value);
+    CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(param.comparison, param.times);
     RequestPattern requestPattern = read(param.jsonMapping, RequestPattern.class);
 
     config.getMockClient().verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));

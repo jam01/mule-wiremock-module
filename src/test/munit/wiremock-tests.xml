@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config"
+		doc:id="1918a82f-aac1-4f14-b861-b48b6d9a7a81">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="c4ef8bcc-4e85-4219-ad39-71a6b9b43926"
+		file="munit.properties" />
+	<flow name="wiremock-testsFlow" doc:id="0c993de8-8718-4f8f-bb25-8a7b82f5051f">
+		<http:listener doc:name="Listener" doc:id="eb8f74c3-f45f-4b98-b748-b7c197d7136f"
+			config-ref="HTTP_Listener_config" path="/" />
+		<http:request method="GET" doc:name="Request" doc:id="e8470bfb-78dc-46a0-b9c2-177b53338b0d" url="${url}" />
+		<set-payload value="#[%dw 2.0 output application/json --- upper(attributes.reasonPhrase)]"
+			doc:name="Set Payload" doc:id="a70c29eb-3b43-4c97-a58a-510f6d64666b" />
+	</flow>
+</mule>
