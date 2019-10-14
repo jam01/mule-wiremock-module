@@ -22,7 +22,7 @@ import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvi
 
 public class WireMockOperations {
 
-  private static final String WHEN_PARAM_GROUP = "When request... then return...";
+  private static final String WHEN_PARAM_GROUP = "When request... then respond...";
   private static final String VERIFY_PARAM_GROUP = "Verify that...";
   private static final Logger LOGGER = LoggerFactory.getLogger(WireMockOperations.class);
 
