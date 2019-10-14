@@ -30,11 +30,9 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<munit:config name="new-test-suite.xml" />
 	<wiremock:config name="Wiremock_Config1" doc:name="Wiremock Config"
-		doc:id="4a8e8f52-b2b4-4587-9179-a7f039d266cb" />
-	<munit:before-suite name="new-test-suiteBefore_Suite" doc:id="adcad33c-3ceb-4fbf-967c-de62dfad0fd3">
-		<wiremock:start-server doc:name="Start" doc:id="83243d0c-8e6b-4194-b466-65d547134bb1"
-			config-ref="Wiremock_Config1" />
-	</munit:before-suite>
+		doc:id="4a8e8f52-b2b4-4587-9179-a7f039d266cb">
+		<wiremock:connection host="0.0.0.0" port="8080" />
+	</wiremock:config>
 	<munit:test name="new-test-suiteTest" doc:id="ec6d1e67-7f72-4108-9547-baa6408483d2">
 		<munit:enable-flow-sources>
 			<munit:enable-flow-source value="wiremock-testsFlow" />
@@ -75,9 +73,4 @@ output application/json
 }]' />
 		</munit:validation>
 	</munit:test>
-	<munit:after-suite name="new-test-suiteAfter_Suite" doc:id="76997daa-f587-4dfe-bbdc-9edd73e0e9d8">
-		<wiremock:stop-server doc:name="Stop" doc:id="bdf94fa9-5cb7-41d0-89e4-8e798c860d5e"
-			config-ref="Wiremock_Config1" />
-	</munit:after-suite>
-
 </mule>

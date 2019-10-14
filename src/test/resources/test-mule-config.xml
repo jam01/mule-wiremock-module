@@ -22,10 +22,11 @@
 	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
           http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd">
 
-	<wiremock:config name="wiremock-config" />
+	<wiremock:config name="wiremock-config">
+		<wiremock:connection host="0.0.0.0" port="8080" />
+	</wiremock:config>
 
 	<flow name="hello-world-flow">
-		<wiremock:start-server config-ref="wiremock-config" />
 		<http:request method="GET" url="http://localhost:8080/hello" />
 		<wiremock:verify-request config-ref="wiremock-config"
 			jsonMapping='#[%dw 2.0
@@ -35,7 +36,6 @@ output application/json
 	"method" : "GET",
 	"url" : "/hello"
 }]' />
-		<wiremock:stop-server config-ref="wiremock-config" />
 	</flow>
 
 </mule>
