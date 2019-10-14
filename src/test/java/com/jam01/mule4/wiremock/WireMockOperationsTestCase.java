@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-public class BasicOperationsTestCase extends MuleArtifactFunctionalTestCase {
+public class WireMockOperationsTestCase extends MuleArtifactFunctionalTestCase {
 
   @Override
   protected String getConfigFile() {
@@ -17,11 +17,8 @@ public class BasicOperationsTestCase extends MuleArtifactFunctionalTestCase {
   }
 
   @Test
-  public void executeStubOperation() throws Exception {
+  public void autoStubAndVerify() throws Exception {
     CoreEvent result = flowRunner("hello-world-flow").run();
     assertThat(((HttpResponseAttributes) result.getMessage().getAttributes().getValue()).getStatusCode(), is(200));
   }
-
-  // @Test
-  public void executeVerifyOperation() throws Exception {}
 }
