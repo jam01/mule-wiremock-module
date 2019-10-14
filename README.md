@@ -1,4 +1,4 @@
-# Basic Extension
+# WireMock Module
 
 Add description ...
 
@@ -12,8 +12,8 @@ Add description ...
 Add this dependency to your application pom.xml
 
 ```
-<groupId>com.jam01</groupId>
-<artifactId>mockserver-module</artifactId>
-<version>0.1.0-SNAPSHOT</version>
+<groupId>com.jam01.mule</groupId>
+<artifactId>mule-wiremock-module</artifactId>
+<version>0.3.0-SNAPSHOT</version>
 <classifier>mule-plugin</classifier>
 ```

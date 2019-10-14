@@ -26,6 +26,37 @@
 	<name>WireMock Module</name>
 	<description>A Mule extension that provides WireMock Server functionality</description>
 
+	<inceptionYear>2019</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>jam01</id>
+			<name>Jose Montoya</name>
+			<email>jam01@protonmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/jam01/mule-wiremock-module.git</connection>
+		<developerConnection>scm:git:https://github.com/jam01/mule-wiremock-module.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/jam01/mule-wiremock-module</url>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/jam01/mule-wiremock-module/issues</url>
+	</issueManagement>
+
+
 	<!-- based on mule-modules-parent:1.3.0
 	see: https://github.com/mulesoft/mule-extensions-parent/blob/1.3.0/pom.xml -->
 	<properties>
