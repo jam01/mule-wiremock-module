@@ -27,7 +27,7 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 //https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/request/HttpRequesterConfig.java
 //https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/request/HttpRequesterProvider.java
 @Xml(prefix = "wiremock")
-@Extension(name = "wiremock")
+@Extension(name = "WireMock")
 @Configurations(WireMockConfiguration.class)
 public class WireMockExtension {
 

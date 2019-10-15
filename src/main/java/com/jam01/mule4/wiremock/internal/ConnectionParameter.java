@@ -58,7 +58,7 @@ public class ConnectionParameter {
   private Integer port;
 
   @Parameter
-  @Optional(defaultValue = "target/test-classes")
+  @Optional(defaultValue = "src/test/resources")
   @Expression(NOT_SUPPORTED)
   @DisplayName("Resources Root Directory")
   @Summary("The relative path to the WireMock resources root directory.")
