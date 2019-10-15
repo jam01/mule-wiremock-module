@@ -14,6 +14,6 @@ Add this dependency to your application pom.xml
 ```
 <groupId>com.jam01.mule</groupId>
 <artifactId>mule-wiremock-module</artifactId>
-<version>0.3.0-SNAPSHOT</version>
+<version>0.4.1-SNAPSHOT</version>
 <classifier>mule-plugin</classifier>
 ```
