@@ -32,6 +32,8 @@ import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.RefName;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
@@ -43,6 +45,7 @@ import static org.mule.runtime.http.api.HttpConstants.Protocol.HTTPS;
 
 public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lifecycle {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(WireMockProvider.class);
   private static final String TLS_CONFIGURATION = "TLS Configuration";
   private WireMockServer mockServer;
   private WireMock mock;
@@ -76,18 +79,17 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
 
   @Override
   public void initialise() throws InitialisationException {
-    int port = java.util.Optional.ofNullable(connectionParams.getPort())
-        .orElseGet(connectionParams.getProtocol()::getDefaultPort);
-
     if (connectionParams.getProtocol().equals(HTTP) && tlsContext != null) {
       throw new InitialisationException(createStaticMessage("TlsContext cannot be configured with protocol HTTP. "
-          + "If you defined a tls:context element in your listener-config then you must set protocol=\"HTTPS\""), this);
+          + "If you defined a tls:context element in your wiremock:config then you must set protocol=\"HTTPS\""), this);
     }
+
     if (connectionParams.getProtocol().equals(HTTPS) && tlsContext == null) {
       throw new InitialisationException(createStaticMessage("Configured protocol is HTTPS but there's no TlsContext configured for configuration '%s'.",
                                                             configName),
                                         this);
     }
+
     if (tlsContext != null && !tlsContext.isKeyStoreConfigured()) {
       throw new InitialisationException(createStaticMessage("KeyStore must be configured for server side SSL in configuration '%s'.",
                                                             configName),
@@ -99,10 +101,11 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
     }
 
     WireMockConfiguration options = options()
+        .usingFilesUnderDirectory(connectionParams.getResources())
         .bindAddress(connectionParams.getHost());
 
     if (connectionParams.getProtocol() == HTTPS) {
-      options.httpsPort(port);
+      options.httpsPort(connectionParams.getPort());
       if (tlsContext.isKeyStoreConfigured())
         options.keystoreType(tlsContext.getKeyStoreConfiguration().getType())
             .keystorePath(tlsContext.getKeyStoreConfiguration().getPath())
@@ -114,7 +117,7 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
             .trustStorePath(tlsContext.getTrustStoreConfiguration().getPath())
             .trustStorePassword(tlsContext.getTrustStoreConfiguration().getPassword());
     } else {
-      options.port(port);
+      options.port(connectionParams.getPort());
     }
 
     mockServer = new WireMockServer(options);

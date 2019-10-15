@@ -18,8 +18,10 @@ package com.jam01.mule4.wiremock.internal;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.http.api.HttpConstants;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
@@ -55,6 +57,12 @@ public class ConnectionParameter {
   @Placement(order = 3)
   private Integer port;
 
+  @Parameter
+  @Optional(defaultValue = "target/test-classes")
+  @Expression(NOT_SUPPORTED)
+  @DisplayName("Resources Root Directory")
+  @Summary("The relative path to the WireMock resources root directory.")
+  private String resources;
 
   public HttpConstants.Protocol getProtocol() {
     return protocol;
@@ -66,5 +74,9 @@ public class ConnectionParameter {
 
   public Integer getPort() {
     return port;
+  }
+
+  public String getResources() {
+    return resources;
   }
 }

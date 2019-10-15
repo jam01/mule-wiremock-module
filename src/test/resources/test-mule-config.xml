@@ -23,7 +23,8 @@
           http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd">
 
 	<wiremock:config name="wiremock-config">
-		<wiremock:connection host="0.0.0.0" port="8080" />
+		<wiremock:connection host="0.0.0.0" port="8080" resources="target/test-classes/boop" />
+		<!--		<wiremock:connection host="0.0.0.0" port="8080" resources="src/test/resources/foo-root" />-->
 	</wiremock:config>
 
 	<flow name="hello-world-flow">
