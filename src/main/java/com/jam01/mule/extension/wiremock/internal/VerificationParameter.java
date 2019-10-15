@@ -13,16 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jam01.mule4.wiremock.internal;
+package com.jam01.mule.extension.wiremock.internal;
 
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+import org.mule.runtime.extension.api.annotation.values.OfValues;
 
-public class StubParameter {
+import static com.jam01.mule.extension.wiremock.internal.VerificationComparisonValueProvider.IS_EQUAL_TO;
+
+public class VerificationParameter {
 
   @Parameter
-  @DisplayName("JSON Stub Mapping")
-  @Summary("A JSON representation of a WireMock StubMapping as defined in http://wiremock.org/docs/stubbing/")
+  @DisplayName("Comparison")
+  @OfValues(VerificationComparisonValueProvider.class)
+  @Optional(defaultValue = IS_EQUAL_TO)
+  String comparison;
+
+  @Parameter
+  @DisplayName("Times")
+  @Optional(defaultValue = "1")
+  Integer times;
+
+  @Parameter
+  @DisplayName("JSON Verification Mapping")
+  @Summary("A JSON representation of a WireMock RequestPattern as defined in http://wiremock.org/docs/verifying/")
   Object jsonMapping;
 }

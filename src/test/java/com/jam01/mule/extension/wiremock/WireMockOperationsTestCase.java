@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jam01.mule4.wiremock;
+package com.jam01.mule.extension.wiremock;
 
 import org.junit.Test;
 import org.mule.extension.http.api.HttpResponseAttributes;

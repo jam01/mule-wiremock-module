@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jam01.mule4.wiremock.internal;
+package com.jam01.mule.extension.wiremock.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.client.CountMatchingStrategy;
@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.*;
+import static com.jam01.mule.extension.wiremock.internal.VerificationComparisonValueProvider.*;
 
 public class WireMockOperations {
 
