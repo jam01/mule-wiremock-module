@@ -18,16 +18,17 @@ package com.jam01.mule4.wiremock.internal;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 
-import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_AT_LEAST;
+import static com.jam01.mule4.wiremock.internal.VerificationComparisonValueProvider.IS_EQUAL_TO;
 
 public class VerificationParameter {
 
   @Parameter
   @DisplayName("Comparison")
   @OfValues(VerificationComparisonValueProvider.class)
-  @Optional(defaultValue = IS_AT_LEAST)
+  @Optional(defaultValue = IS_EQUAL_TO)
   String comparison;
 
   @Parameter
@@ -37,5 +38,6 @@ public class VerificationParameter {
 
   @Parameter
   @DisplayName("JSON Verification Mapping")
+  @Summary("A JSON representation of a WireMock RequestPattern as defined in http://wiremock.org/docs/verifying/")
   Object jsonMapping;
 }

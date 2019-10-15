@@ -17,10 +17,12 @@ package com.jam01.mule4.wiremock.internal;
 
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 public class StubParameter {
 
   @Parameter
   @DisplayName("JSON Stub Mapping")
+  @Summary("A JSON representation of a WireMock StubMapping as defined in http://wiremock.org/docs/stubbing/")
   Object jsonMapping;
 }
