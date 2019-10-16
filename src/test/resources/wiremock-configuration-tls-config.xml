@@ -30,7 +30,16 @@
 	<wiremock:config name="localhostWiremockConfig">
 		<wiremock:connection host="0.0.0.0" port="8444" protocol="HTTPS">
 			<tls:context>
-				<tls:key-store type="jks" path="localhost-keystore.jks" keyPassword="changeit" password="changeit" />
+				<tls:key-store type="jks" path="server-localhost-keystore.jks" keyPassword="changeit"
+					password="changeit" />
+			</tls:context>
+		</wiremock:connection>
+	</wiremock:config>
+
+	<wiremock:config name="authWiremockConfig">
+		<wiremock:connection host="0.0.0.0" port="8445" protocol="HTTPS">
+			<tls:context>
+				<tls:trust-store type="jks" path="server-cacerts.jks" password="changeit" />
 			</tls:context>
 		</wiremock:connection>
 	</wiremock:config>
@@ -46,7 +55,16 @@
 	<http:request-config name="secureRequestConfig">
 		<http:request-connection protocol="HTTPS" port="8444" host="localhost">
 			<tls:context>
-				<tls:trust-store type="jks" path="localhost-cacerts.jks" password="changeit" />
+				<tls:trust-store type="jks" path="client-cacerts.jks" password="changeit" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+
+	<http:request-config name="authRequestConfig">
+		<http:request-connection protocol="HTTPS" port="8445" host="localhost">
+			<tls:context>
+				<tls:trust-store insecure="true" />
+				<tls:key-store type="jks" path="client-keystore.jks" keyPassword="changeit" password="changeit" />
 			</tls:context>
 		</http:request-connection>
 	</http:request-config>
@@ -63,5 +81,14 @@
 	<flow name="test-secure-request-localhost-cert-flow">
 		<http:request path="/hello" method="GET" config-ref="secureRequestConfig" />
 		<object-to-string-transformer />
+	</flow>
+
+	<flow name="test-auth-request-trusted-cert-flow">
+		<http:request path="/hello" method="GET" config-ref="authRequestConfig" />
+		<object-to-string-transformer />
+	</flow>
+
+	<flow name="test-auth-request-no-cert-flow">
+		<http:request method="GET" url="https://localhost:8445/hello" />
 	</flow>
 </mule>

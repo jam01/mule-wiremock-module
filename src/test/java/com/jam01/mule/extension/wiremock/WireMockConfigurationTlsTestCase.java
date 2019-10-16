@@ -62,4 +62,21 @@ public class WireMockConfigurationTlsTestCase extends MuleArtifactFunctionalTest
 
     assertThat(event.getMessage().getPayload().getValue(), is("Hello world!"));
   }
+
+
+  @Test
+  public void authClientTrustedCertRequest() throws Exception {
+    CoreEvent event = runFlow("test-auth-request-trusted-cert-flow");
+
+    assertThat(event.getMessage().getPayload().getValue(), is("Hello world!"));
+  }
+
+  @Test
+  public void authClientNoCertRequestFails() throws Exception {
+    expectedError.expectCause(instanceOf(IOException.class));
+    expectedError
+        .expectCause(anyOf(hasMessage(containsString("General SSLEngine problem")),
+                           hasMessage(containsString("PKIX path building failed"))));
+    runFlow("test-secure-request-default-cert-flow");
+  }
 }
