@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jam01.mule</groupId>
 	<artifactId>mule-wiremock-module</artifactId>
-	<version>0.4.1-SNAPSHOT</version>
+	<version>0.4.2-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>WireMock Module</name>
 	<description>A Mule extension that provides WireMock Server functionality</description>
@@ -225,7 +225,19 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- [end] mule extension dependencies [end] -->
-
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>4.5.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.runtime</groupId>
+			<artifactId>mule-module-extensions-support</artifactId>
+			<version>${mule.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>

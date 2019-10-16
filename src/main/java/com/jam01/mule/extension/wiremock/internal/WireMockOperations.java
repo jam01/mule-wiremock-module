@@ -24,6 +24,8 @@ import com.github.tomakehurst.wiremock.matching.RequestPattern;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
+import joptsimple.internal.Strings;
+import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
@@ -33,6 +35,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
 import static com.jam01.mule.extension.wiremock.internal.VerificationComparisonValueProvider.*;
@@ -104,6 +108,8 @@ public class WireMockOperations {
         return new CountMatchingStrategy(CountMatchingStrategy.EQUAL_TO, value);
     }
 
-    throw new IllegalStateException("This should never happen!");
+    throw new IllegalArgumentException(
+                                       String.format("Unrecognized comparison value %s, valid values are %s", comparison,
+                                                     VALUES.stream().map(Value::getId).collect(Collectors.joining(", "))));
   }
 }

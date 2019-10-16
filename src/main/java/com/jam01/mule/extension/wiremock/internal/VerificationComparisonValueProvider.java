@@ -30,7 +30,7 @@ public class VerificationComparisonValueProvider implements ValueProvider {
   public static final String IS_AT_LEAST = "AT_LEAST";
   public static final String IS_AT_MOST = "AT_MOST";
   public static final String IS_EQUAL_TO = "EQUAL";
-  private static final Set<Value> VALUES;
+  public static final Set<Value> VALUES;
 
   static {
     VALUES = getValuesFor(Collections.unmodifiableMap(new HashMap<String, String>(3) {

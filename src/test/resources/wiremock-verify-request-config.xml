@@ -17,19 +17,15 @@
 -->
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wiremock="http://www.mulesoft.org/schema/mule/wiremock"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
           http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd">
 
-	<wiremock:config name="wiremock-config">
-		<wiremock:connection host="0.0.0.0" port="8080" resources="target/test-classes/boop" />
-		<!--		<wiremock:connection host="0.0.0.0" port="8080" resources="src/test/resources/foo-root" />-->
+	<wiremock:config name="wiremockConfig">
+		<wiremock:connection host="0.0.0.0" port="8080" />
 	</wiremock:config>
 
-	<flow name="hello-world-flow">
-		<http:request method="GET" url="http://localhost:8080/hello" />
-		<wiremock:verify-request config-ref="wiremock-config"
+	<flow name="verify-request-flow">
+		<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL" times="2"
 			jsonMapping='#[%dw 2.0
 output application/json
 ---
