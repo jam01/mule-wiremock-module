@@ -40,7 +40,7 @@ import static com.jam01.mule.extension.wiremock.internal.VerificationComparisonV
 public class WireMockOperations {
 
   private static final String WHEN_PARAM_GROUP = "Given scenario... when request... then respond...";
-  private static final String VERIFY_PARAM_GROUP = "Verify that...";
+  private static final String VERIFY_PARAM_GROUP = "Verify that request...";
   private static final Logger LOGGER = LoggerFactory.getLogger(WireMockOperations.class);
 
   public void addStub(@Config WireMockConfiguration config,
