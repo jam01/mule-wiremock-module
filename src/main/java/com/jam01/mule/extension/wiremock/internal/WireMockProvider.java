@@ -84,18 +84,6 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
           + "If you defined a tls:context element in your wiremock:config then you must set protocol=\"HTTPS\""), this);
     }
 
-    if (connectionParams.getProtocol().equals(HTTPS) && tlsContext == null) {
-      throw new InitialisationException(createStaticMessage("Configured protocol is HTTPS but there's no TlsContext configured for configuration '%s'.",
-                                                            configName),
-                                        this);
-    }
-
-    if (tlsContext != null && !tlsContext.isKeyStoreConfigured()) {
-      throw new InitialisationException(createStaticMessage("KeyStore must be configured for server side SSL in configuration '%s'.",
-                                                            configName),
-                                        this);
-    }
-
     if (tlsContext != null) {
       initialiseIfNeeded(tlsContext);
     }
@@ -106,16 +94,18 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
 
     if (connectionParams.getProtocol() == HTTPS) {
       options.httpsPort(connectionParams.getPort());
-      if (tlsContext.isKeyStoreConfigured())
-        options.keystoreType(tlsContext.getKeyStoreConfiguration().getType())
-            .keystorePath(tlsContext.getKeyStoreConfiguration().getPath())
-            .keystorePassword(tlsContext.getKeyStoreConfiguration().getPassword());
+      if (tlsContext != null) {
+        if (tlsContext.isKeyStoreConfigured())
+          options.keystoreType(tlsContext.getKeyStoreConfiguration().getType())
+              .keystorePath(tlsContext.getKeyStoreConfiguration().getPath())
+              .keystorePassword(tlsContext.getKeyStoreConfiguration().getPassword());
 
-      if (tlsContext.isTrustStoreConfigured())
-        options.needClientAuth(true)
-            .trustStoreType(tlsContext.getTrustStoreConfiguration().getType())
-            .trustStorePath(tlsContext.getTrustStoreConfiguration().getPath())
-            .trustStorePassword(tlsContext.getTrustStoreConfiguration().getPassword());
+        if (tlsContext.isTrustStoreConfigured())
+          options.needClientAuth(true)
+              .trustStoreType(tlsContext.getTrustStoreConfiguration().getType())
+              .trustStorePath(tlsContext.getTrustStoreConfiguration().getPath())
+              .trustStorePassword(tlsContext.getTrustStoreConfiguration().getPassword());
+      }
     } else {
       options.port(connectionParams.getPort());
     }

@@ -1,0 +1,47 @@
+<!--
+
+    Copyright 2019 Jose Montoya
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:wiremock="http://www.mulesoft.org/schema/mule/wiremock"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	  	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd
+		http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+	<wiremock:config name="wiremockConfig">
+		<wiremock:connection host="0.0.0.0" port="8443" protocol="HTTPS" />
+	</wiremock:config>
+
+	<http:request-config name="insecureRequestConfig">
+		<http:request-connection protocol="HTTPS" port="8443" host="localhost">
+			<tls:context>
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+
+	<flow name="test-secure-request-flow">
+		<http:request method="GET" url="https://localhost:8443/hello" />
+	</flow>
+
+	<flow name="test-insecure-request-flow">
+		<http:request path="/hello" method="GET" config-ref="insecureRequestConfig" />
+		<object-to-string-transformer />
+	</flow>
+
+</mule>
