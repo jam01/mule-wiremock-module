@@ -27,6 +27,14 @@
 		<wiremock:connection host="0.0.0.0" port="8443" protocol="HTTPS" />
 	</wiremock:config>
 
+	<wiremock:config name="localhostWiremockConfig">
+		<wiremock:connection host="0.0.0.0" port="8444" protocol="HTTPS">
+			<tls:context>
+				<tls:key-store type="jks" path="localhost-keystore.jks" keyPassword="changeit" password="changeit" />
+			</tls:context>
+		</wiremock:connection>
+	</wiremock:config>
+
 	<http:request-config name="insecureRequestConfig">
 		<http:request-connection protocol="HTTPS" port="8443" host="localhost">
 			<tls:context>
@@ -35,13 +43,25 @@
 		</http:request-connection>
 	</http:request-config>
 
-	<flow name="test-secure-request-flow">
+	<http:request-config name="secureRequestConfig">
+		<http:request-connection protocol="HTTPS" port="8444" host="localhost">
+			<tls:context>
+				<tls:trust-store type="jks" path="localhost-cacerts.jks" password="changeit" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+
+	<flow name="test-secure-request-default-cert-flow">
 		<http:request method="GET" url="https://localhost:8443/hello" />
 	</flow>
 
-	<flow name="test-insecure-request-flow">
+	<flow name="test-insecure-request-default-cert-flow">
 		<http:request path="/hello" method="GET" config-ref="insecureRequestConfig" />
 		<object-to-string-transformer />
 	</flow>
 
+	<flow name="test-secure-request-localhost-cert-flow">
+		<http:request path="/hello" method="GET" config-ref="secureRequestConfig" />
+		<object-to-string-transformer />
+	</flow>
 </mule>

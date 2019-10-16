@@ -93,6 +93,9 @@ public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lif
         .bindAddress(connectionParams.getHost());
 
     if (connectionParams.getProtocol() == HTTPS) {
+      // forcing regular HTTP to a random port as WireMock will always start one regardless
+      // See: com.github.tomakehurst.wiremock.jetty9.JettyHttpServer.JettyHttpServer
+      options.dynamicPort();
       options.httpsPort(connectionParams.getPort());
       if (tlsContext != null) {
         if (tlsContext.isKeyStoreConfigured())

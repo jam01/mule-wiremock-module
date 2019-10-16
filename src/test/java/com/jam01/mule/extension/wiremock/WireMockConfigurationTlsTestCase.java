@@ -15,20 +15,20 @@
  */
 package com.jam01.mule.extension.wiremock;
 
-import static org.hamcrest.CoreMatchers.anyOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mule.functional.api.exception.ExpectedError;
-import static org.junit.internal.matchers.ThrowableMessageMatcher.hasMessage;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.core.api.event.CoreEvent;
 
 import java.io.IOException;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.ThrowableMessageMatcher.hasMessage;
 
 public class WireMockConfigurationTlsTestCase extends MuleArtifactFunctionalTestCase {
 
@@ -41,17 +41,25 @@ public class WireMockConfigurationTlsTestCase extends MuleArtifactFunctionalTest
   }
 
   @Test
-  public void insecureRequest() throws Exception {
-    CoreEvent event = runFlow("test-insecure-request-flow");
+  public void defaultServerCertInsecureRequest() throws Exception {
+    CoreEvent event = runFlow("test-insecure-request-default-cert-flow");
+
     assertThat(event.getMessage().getPayload().getValue(), is("Hello world!"));
   }
 
   @Test
-  public void secureRequestFails() throws Exception {
+  public void defaultServerCertSecureRequestFails() throws Exception {
     expectedError.expectCause(instanceOf(IOException.class));
     expectedError
         .expectCause(anyOf(hasMessage(containsString("General SSLEngine problem")),
                            hasMessage(containsString("PKIX path building failed"))));
-    runFlow("test-secure-request-flow");
+    runFlow("test-secure-request-default-cert-flow");
+  }
+
+  @Test
+  public void localhostServerCertSecureRequest() throws Exception {
+    CoreEvent event = runFlow("test-secure-request-localhost-cert-flow");
+
+    assertThat(event.getMessage().getPayload().getValue(), is("Hello world!"));
   }
 }
