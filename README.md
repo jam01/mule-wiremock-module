@@ -39,3 +39,6 @@ Add this dependency to your application pom.xml
 </dependency>
 ```
 
+See the module's own [MUnit integration test](./src/test/munit/munit-integration-test-suite.xml) serves as a complete and commented example on how to use the connector.
+
+For more details on verifying requests and stubbing responses, see [WireMock Stubbing](http://wiremock.org/docs/stubbing), [WireMock Verifying](http://wiremock.org/docs/stubbing), and [WireMock RequestMatching](http://wiremock.org/docs/request-matching/)
