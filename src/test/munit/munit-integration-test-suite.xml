@@ -89,9 +89,9 @@ output application/json
 {
 	"method" : "POST",
 	"url" : "/service-2",
-    "bodyPatterns": [{
-      "equalTo": "HELLO MUNIT INTEGRATION TEST!"
-    }]
+	"bodyPatterns": [{
+		"equalTo": "HELLO MUNIT INTEGRATION TEST!"
+	}]
 }]' />
 		</munit:validation>
 	</munit:test>
