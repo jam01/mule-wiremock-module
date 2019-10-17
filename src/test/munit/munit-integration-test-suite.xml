@@ -1,0 +1,98 @@
+<!--
+
+    Copyright 2019 Jose Montoya
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:wiremock="http://www.mulesoft.org/schema/mule/wiremock"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+		http://www.mulesoft.org/schema/mule/wiremock http://www.mulesoft.org/schema/mule/wiremock/current/mule-wiremock.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+
+	<!-- a simple sample of an HTTP service that depends on calling others -->
+	<http:listener-config name="HTTP_Listener_config">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration-properties file="munit.properties" />
+	<flow name="munit-integration-test-flow">
+		<http:listener config-ref="HTTP_Listener_config" path="/system-under-test" />
+		<http:request method="GET" url="http://${host_1}/service-1" />
+		<set-payload value="#[upper(payload)]" />
+		<http:request method="POST" url="http://${host_2}/service-2" />
+	</flow>
+
+	<!-- our munit integration test -->
+	<munit:config name="munit-integration-test-suite.xml" />
+	<!-- we tell wiremock to use munit-integration-root as its resources root directory, check the
+	mappings/service-1.json to see what we can expect /service-1 to respond -->
+	<wiremock:config name="wiremockConfig">
+		<wiremock:connection host="0.0.0.0" port="8080" resources="src/test/resources/munit-integration-root" />
+	</wiremock:config>
+	<munit:test name="munit-integration-test-test">
+		<munit:enable-flow-sources>
+			<munit:enable-flow-source value="munit-integration-test-flow" />
+		</munit:enable-flow-sources>
+		<munit:execution>
+			<!-- we also manually add a stub mapping for this particular test -->
+			<wiremock:add-stub
+				jsonMapping='#[%dw 2.0
+output application/json
+---
+{
+  "request" : {
+    "method" : "POST",
+    "url" : "/service-2"
+  },
+  "response" : {
+    "status" : 204,
+    "statusMessage": "No Content"
+  }
+}]'
+				config-ref="wiremockConfig" />
+			<!-- we make a live request to /system-under-test -->
+			<http:request method="GET" url="http://localhost:8081/system-under-test" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals actual="#[attributes.'statusCode']" expected="#[200]" />
+			<!-- here we verify that exactly one request was made to /service-1 -->
+			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL" times="1"
+				jsonMapping='#[%dw 2.0
+output application/json
+---
+{
+	"method" : "GET",
+	"url" : "/service-1"
+}]' />
+			<!-- here we verify that exactly one request was made to /service-2 and that it contained the correct body
+            according to the expected behavior of /system-under-test -->
+			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL" times="1"
+				jsonMapping='#[%dw 2.0
+output application/json
+---
+{
+	"method" : "POST",
+	"url" : "/service-2",
+    "bodyPatterns": [{
+      "equalTo": "HELLO MUNIT INTEGRATION TEST!"
+    }]
+}]' />
+		</munit:validation>
+	</munit:test>
+</mule>

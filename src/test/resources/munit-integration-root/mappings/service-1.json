@@ -1,0 +1,13 @@
+{
+    "request" : {
+        "method" : "GET",
+        "url" : "/service-1"
+    },
+    "response" : {
+        "status" : 200,
+        "body" : "hello munit integration test!",
+        "headers" : {
+            "Content-Type" : "text/plain"
+        }
+    }
+}
