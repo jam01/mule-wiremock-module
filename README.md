@@ -1,6 +1,6 @@
 # Mule WireMock Module
 
-When writing integration software for distributed systems the most critical part to test is the interaction between those systems. Obviously this is makes integration tests vital. Traditionally we would test against live systems, but having a local instance of an upstream system or a dedicated test instance can be expensive and/or difficult to coordinate its desired state between tests.
+When writing integration software for distributed systems the most critical part to test is the interaction between those systems. Obviously this makes integration tests vital. Traditionally we would test against live systems, but having a local instance of an upstream system or a dedicated test instance can be expensive and/or difficult to coordinate its state between tests.
 
 Instead we can opt to verify the interactions against test doubles, also known as narrow integration tests. WireMock is a simulator for HTTP-based APIs that allows us to spin up a HTTP server and configure stubbed responses for particular requests. 
 
