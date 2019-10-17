@@ -19,13 +19,6 @@ import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Configurations;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 
-//See:
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/listener/HttpListener.java
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/api/listener/server/HttpListenerConfig.java
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/listener/HttpListenerProvider.java
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/request/HttpRequestOperations.java
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/request/HttpRequesterConfig.java
-//https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/request/HttpRequesterProvider.java
 @Xml(prefix = "wiremock")
 @Extension(name = "WireMock")
 @Configurations(WireMockConfiguration.class)

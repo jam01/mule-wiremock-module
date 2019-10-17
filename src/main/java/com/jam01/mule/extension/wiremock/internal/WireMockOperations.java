@@ -24,7 +24,6 @@ import com.github.tomakehurst.wiremock.matching.RequestPattern;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
-import joptsimple.internal.Strings;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Connection;
@@ -35,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.common.Exceptions.throwUnchecked;
@@ -53,9 +51,10 @@ public class WireMockOperations {
     if (param.jsonMapping == null)
       return;
 
+    // See:
+    // https://github.com/tomakehurst/wiremock/blob/2.25.1/src/main/java/com/github/tomakehurst/wiremock/standalone/JsonFileMappingsSource.java
+    // available under SPDX-License-Identifier: Apache-2.0
     StubMappingCollection stubCollection = read(param.jsonMapping, StubMappingCollection.class);
-
-    // See: com.github.tomakehurst.wiremock.standalone.JsonFileMappingsSource.loadMappingsInto
     try {
       for (StubMapping mapping : stubCollection.getMappingOrMappings()) {
         mapping.setDirty(false);
@@ -78,7 +77,8 @@ public class WireMockOperations {
     wireMock.verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));
   }
 
-  // See: com.github.tomakehurst.wiremock.common.Json.read(java.lang.String, java.lang.Class<T>)
+  // See: https://github.com/tomakehurst/wiremock/blob/2.25.1/src/main/java/com/github/tomakehurst/wiremock/common/Json.java
+  // available under SPDX-License-Identifier: Apache-2.0
   private static <T> T read(@Nonnull Object object, Class<T> clazz) {
     try {
       if (object instanceof InputStream) {

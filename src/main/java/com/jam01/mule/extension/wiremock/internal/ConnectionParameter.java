@@ -26,6 +26,8 @@ import org.mule.runtime.http.api.HttpConstants;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
+// See: https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/listener/HttpListenerProvider.java
+// available under SPDX-License-Identifier: CPAL-1.0
 public class ConnectionParameter {
 
   /**

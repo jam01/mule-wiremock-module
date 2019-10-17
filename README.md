@@ -17,3 +17,4 @@ Add this dependency to your application pom.xml
 <version>0.4.3-SNAPSHOT</version>
 <classifier>mule-plugin</classifier>
 ```
+

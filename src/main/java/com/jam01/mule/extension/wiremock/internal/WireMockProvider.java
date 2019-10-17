@@ -43,6 +43,8 @@ import static org.mule.runtime.extension.api.annotation.param.display.Placement.
 import static org.mule.runtime.http.api.HttpConstants.Protocol.HTTP;
 import static org.mule.runtime.http.api.HttpConstants.Protocol.HTTPS;
 
+// See: https://github.com/mulesoft/mule-http-connector/blob/1.5.9/src/main/java/org/mule/extension/http/internal/listener/HttpListenerProvider.java
+// available under SPDX-License-Identifier: CPAL-1.0
 public class WireMockProvider implements CachedConnectionProvider<WireMock>, Lifecycle {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WireMockProvider.class);
