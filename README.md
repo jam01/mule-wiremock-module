@@ -8,7 +8,7 @@ With the Mule WireMock Module we can spin up an in-process HTTP Server and run o
 
 1. We're actually sending requests over the wire so we get the confidence that HTTP Requester configuration and subsequent processors are correct.   
 2. WireMock supports conditional responses based on scenarios, this way we can more easily test behavior that changes the external system's state as it executes.
-3. With an actual HTTP Server serving requests it's simpler to implement your application if the real services are not yet available or it's difficult to control its state.
+3. With an actual HTTP Server serving requests it's simpler to implement your application if the real services are not yet available or it's difficult to control their state.
 
 
 Resources worth checking out:
@@ -39,6 +39,6 @@ Add this dependency to your application pom.xml
 </dependency>
 ```
 
-See the module's own [MUnit integration test](./src/test/munit/munit-integration-test-suite.xml) serves as a complete and commented example on how to use the connector.
+See the module's own [MUnit integration test](./src/test/munit/munit-integration-test-suite.xml) for a complete and commented example on how to use the connector.
 
 For more details on verifying requests and stubbing responses, see [WireMock Stubbing](http://wiremock.org/docs/stubbing), [WireMock Verifying](http://wiremock.org/docs/stubbing), and [WireMock RequestMatching](http://wiremock.org/docs/request-matching/)

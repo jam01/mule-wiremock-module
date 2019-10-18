@@ -29,11 +29,13 @@ public class VerificationParameter {
   @DisplayName("Comparison")
   @OfValues(VerificationComparisonValueProvider.class)
   @Optional(defaultValue = IS_EQUAL_TO)
+  @Summary("The type of comparison to make between the expected and actual number of matched requests.")
   String comparison;
 
   @Parameter
   @DisplayName("Times")
   @Optional(defaultValue = "1")
+  @Summary("The expected count of matched requests.")
   Integer times;
 
   @Parameter

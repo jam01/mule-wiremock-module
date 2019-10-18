@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jam01.mule</groupId>
 	<artifactId>mule-wiremock-module</artifactId>
-	<version>0.4.3-SNAPSHOT</version>
+	<version>0.4.4-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>Mule WireMock Module</name>
 	<description>A Mule extension that provides WireMock Server functionality</description>
