@@ -23,7 +23,10 @@ Mule Core (4.2.0)
 Mule HTTP Service API (1.4.7)   
 Mule HTTP Connector Module (2.2.10) 
 
-* SPDX-License-Identifier: CPAL-1.0
+* SPDX-License-Identifier: CPAL-1.0     
+    Copyright (c) 2003-2015 MuleSoft Inc.    
+    Powered by Mule. MuleSoft is Open for Integration.   
+    http://www.MuleSoft.com
 
 JUnit (4.12)
 
