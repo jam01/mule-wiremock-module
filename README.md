@@ -32,9 +32,9 @@ Add this dependency to your application pom.xml
 
 ```
 <dependency>
-    <groupId>com.jam01.mule</groupId>
+    <groupId>com.ms3_inc.mule</groupId>
     <artifactId>mule-wiremock-module</artifactId>
-    <version>0.4.3-SNAPSHOT</version>
+    <version>0.4.4-SNAPSHOT</version>
     <classifier>mule-plugin</classifier>
 </dependency>
 ```
