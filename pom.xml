@@ -19,7 +19,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.jam01.mule</groupId>
+	<groupId>com.ms3_inc.mule</groupId>
 	<artifactId>mule-wiremock-module</artifactId>
 	<version>0.4.4-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
@@ -45,15 +45,15 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:https://github.com/jam01/mule-wiremock-module.git</connection>
-		<developerConnection>scm:git:https://github.com/jam01/mule-wiremock-module.git</developerConnection>
+		<connection>scm:git:https://github.com/MS3Inc/mule-wiremock-module.git</connection>
+		<developerConnection>scm:git:https://github.com/MS3Inc/mule-wiremock-module.git</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/jam01/mule-wiremock-module</url>
+		<url>https://github.com/MS3Inc/mule-wiremock-module</url>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/jam01/mule-wiremock-module/issues</url>
+		<url>https://github.com/MS3Inc/mule-wiremock-module/issues</url>
 	</issueManagement>
 
 
