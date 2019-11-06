@@ -23,9 +23,10 @@
 	<artifactId>mule-wiremock-module</artifactId>
 	<version>0.4.5-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
+
 	<name>Mule WireMock Module</name>
 	<description>A Mule extension that provides WireMock Server functionality</description>
-
+	<url>https://github.com/MS3Inc/mule-wiremock-module</url>
 	<inceptionYear>2019</inceptionYear>
 
 	<licenses>
