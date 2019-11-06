@@ -32,7 +32,7 @@ Add this dependency to your application pom.xml
 
 ```
 <dependency>
-    <groupId>com.ms3_inc.mule</groupId>
+    <groupId>com.ms3-inc.mule</groupId>
     <artifactId>mule-wiremock-module</artifactId>
     <version>0.4.5</version>
     <classifier>mule-plugin</classifier>
