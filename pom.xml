@@ -46,7 +46,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/MS3Inc/mule-wiremock-module.git</connection>
-		<developerConnection>scm:git:https://github.com/MS3Inc/mule-wiremock-module.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:MS3Inc/mule-wiremock-module.git</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/MS3Inc/mule-wiremock-module</url>
 	</scm>
@@ -56,6 +56,16 @@
 		<url>https://github.com/MS3Inc/mule-wiremock-module/issues</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<repository>
+			<id>sonatype-ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<!-- based on mule-modules-parent:1.3.0
 	see: https://github.com/mulesoft/mule-extensions-parent/blob/1.3.0/pom.xml -->
@@ -79,6 +89,7 @@
 		<maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 		<maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
 		<maven.jar.plugin.version>2.6</maven.jar.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
 
 		<sortpom.version>2.10.0</sortpom.version>
 		<formatter.version>2.10.0</formatter.version>
@@ -230,6 +241,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- [end] mule extension dependencies [end] -->
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
@@ -286,31 +298,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<!-- [start] mulesoft repositories [start] -->
-	<repositories>
-		<repository>
-			<id>mule</id>
-			<name>Mule Repository</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>mulesoft-plugin-releases</id>
-			<name>MuleSoft Release Repository</name>
-			<url>http://repository.mulesoft.org/releases/</url>
-			<layout>default</layout>
-		</pluginRepository>
-		<pluginRepository>
-			<id>mulesoft-plugin-snapshots</id>
-			<name>MuleSoft Snapshots Repository</name>
-			<url>http://repository.mulesoft.org/snapshots/</url>
-			<layout>default</layout>
-		</pluginRepository>
-	</pluginRepositories>
-	<!-- [end] mulesoft repositories [end] -->
 
 	<build>
 		<pluginManagement>
@@ -437,6 +424,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${maven.javadoc.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven.release.plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -572,15 +564,13 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<!--
-                            Disabled for http://mule.mulesoft.org/jira/browse/MULE-1153
-                            and http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4408526
-                         -->
+						<!-- Disabled for http://mule.mulesoft.org/jira/browse/MULE-1153
+						and http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4408526 -->
 						<index>false</index>
 						<!-- List dependencies in the MANIFEST.MF -->
 						<manifest>
 							<!-- Note that we do not generate a classpath into the manifest, since doing so
-                                 significnatly slows down compilations that use the jar -->
+							significnatly slows down compilations that use the jar -->
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
@@ -597,6 +587,12 @@
 	<profiles>
 		<profile>
 			<id>release</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -624,6 +620,19 @@
 									<goal>jar</goal>
 									<goal>test-jar</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<phase>verify</phase>
 							</execution>
 						</executions>
 					</plugin>
