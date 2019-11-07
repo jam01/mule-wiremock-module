@@ -98,7 +98,8 @@
 
 		<!-- [start] mule extension properties [start] -->
 		<apt.phase>process-sources</apt.phase>
-		<mule.version>4.2.0</mule.version>
+		<mule.version>4.2.1</mule.version>
+		<mule.tests.version>4.2.0</mule.tests.version>
 		<mule.weave.version>2.2.1</mule.weave.version>
 		<mule.sdk.version>1.2.1</mule.sdk.version>
 		<mule.api.version>1.2.1</mule.api.version>
@@ -219,26 +220,26 @@
 		<dependency>
 			<groupId>org.mule.tests.plugin</groupId>
 			<artifactId>mule-tests-component-plugin</artifactId>
-			<version>${mule.version}</version>
+			<version>${mule.tests.version}</version>
 			<classifier>mule-plugin</classifier>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.tests</groupId>
 			<artifactId>mule-tests-functional</artifactId>
-			<version>${mule.version}</version>
+			<version>${mule.tests.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.tests</groupId>
 			<artifactId>mule-tests-runner</artifactId>
-			<version>${mule.version}</version>
+			<version>${mule.tests.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.tests</groupId>
 			<artifactId>mule-tests-unit</artifactId>
-			<version>${mule.version}</version>
+			<version>${mule.tests.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- [end] mule extension dependencies [end] -->
