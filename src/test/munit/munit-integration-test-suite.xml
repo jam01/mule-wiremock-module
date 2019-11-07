@@ -72,7 +72,7 @@ output application/json
 		<munit:validation>
 			<munit-tools:assert-equals actual="#[attributes.'statusCode']" expected="#[200]" />
 			<!-- here we verify that exactly one request was made to /service-1 -->
-			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL" times="1"
+			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL_TO" times="1"
 				jsonMapping='#[%dw 2.0
 output application/json
 ---
@@ -82,7 +82,7 @@ output application/json
 }]' />
 			<!-- here we verify that exactly one request was made to /service-2 and that it contained the correct body
 			according to the expected behavior of /system-under-test -->
-			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL" times="1"
+			<wiremock:verify-request config-ref="wiremockConfig" comparison="EQUAL_TO" times="1"
 				jsonMapping='#[%dw 2.0
 output application/json
 ---

@@ -29,7 +29,7 @@ public class VerificationComparisonValueProvider implements ValueProvider {
 
   public static final String IS_AT_LEAST = "AT_LEAST";
   public static final String IS_AT_MOST = "AT_MOST";
-  public static final String IS_EQUAL_TO = "EQUAL";
+  public static final String IS_EQUAL_TO = "EQUAL_TO";
   public static final Set<Value> VALUES;
 
   static {
