@@ -20,7 +20,7 @@ import org.mule.runtime.extension.api.annotation.Configurations;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 
 @Xml(prefix = "wiremock")
-@Extension(name = "WireMock")
+@Extension(name = "WireMock", vendor = "MS3 Inc.")
 @Configurations(WireMockConfiguration.class)
 public class WireMockExtension {
 
