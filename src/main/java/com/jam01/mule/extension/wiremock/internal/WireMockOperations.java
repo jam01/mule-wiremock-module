@@ -81,6 +81,11 @@ public class WireMockOperations {
     }
   }
 
+  public void resetRequests(@Config WireMockConfiguration config,
+                            @Connection WireMock wireMock) {
+    wireMock.resetRequests();
+  }
+
   // See: https://github.com/tomakehurst/wiremock/blob/2.25.1/src/main/java/com/github/tomakehurst/wiremock/common/Json.java
   // available under SPDX-License-Identifier: Apache-2.0
   private static <T> T read(@Nonnull Object object, Class<T> clazz) {
