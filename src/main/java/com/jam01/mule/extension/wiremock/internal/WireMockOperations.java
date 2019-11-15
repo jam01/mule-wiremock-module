@@ -54,8 +54,8 @@ public class WireMockOperations {
     // See:
     // https://github.com/tomakehurst/wiremock/blob/2.25.1/src/main/java/com/github/tomakehurst/wiremock/standalone/JsonFileMappingsSource.java
     // available under SPDX-License-Identifier: Apache-2.0
-    StubMappingCollection stubCollection = read(param.jsonMapping, StubMappingCollection.class);
     try {
+      StubMappingCollection stubCollection = read(param.jsonMapping, StubMappingCollection.class);
       for (StubMapping mapping : stubCollection.getMappingOrMappings()) {
         mapping.setDirty(false);
         wireMock.register(mapping);
@@ -72,9 +72,13 @@ public class WireMockOperations {
       return;
 
     CountMatchingStrategy matchingStrategy = getCountMatchingStrategy(param.comparison, param.times);
-    RequestPattern requestPattern = read(param.jsonMapping, RequestPattern.class);
 
-    wireMock.verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));
+    try {
+      RequestPattern requestPattern = read(param.jsonMapping, RequestPattern.class);
+      wireMock.verifyThat(matchingStrategy, RequestPatternBuilder.like(requestPattern));
+    } catch (JsonException e) {
+      throw new IllegalArgumentException(String.format("Error loading json mapping:\n%s", e.getErrors().first().getDetail()));
+    }
   }
 
   // See: https://github.com/tomakehurst/wiremock/blob/2.25.1/src/main/java/com/github/tomakehurst/wiremock/common/Json.java
