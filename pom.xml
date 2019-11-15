@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ms3-inc.mule</groupId>
 	<artifactId>mule-wiremock-module</artifactId>
-	<version>0.5.0</version>
+	<version>0.5.1-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 
 	<name>Mule WireMock Module</name>
@@ -48,7 +48,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/MS3Inc/mule-wiremock-module.git</connection>
 		<developerConnection>scm:git:git@github.com:MS3Inc/mule-wiremock-module.git</developerConnection>
-		<tag>mule-wiremock-module-0.5.0</tag>
+		<tag>HEAD</tag>
 		<url>https://github.com/MS3Inc/mule-wiremock-module</url>
 	</scm>
 
